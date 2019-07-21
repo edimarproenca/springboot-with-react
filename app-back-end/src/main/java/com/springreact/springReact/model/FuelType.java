@@ -2,13 +2,17 @@ package com.springreact.springReact.model;
 
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "fuel_type")
@@ -21,7 +25,7 @@ public class FuelType implements Serializable {
     @SequenceGenerator(name = "fuel_type_sequence", sequenceName = "FUEL_TYPE_SEQ")
 	private Long id;
 	private String name;
-
+	
 	public FuelType() {
 		super();
 	}
@@ -30,7 +34,7 @@ public class FuelType implements Serializable {
 		super();
 		this.name = fuelName;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

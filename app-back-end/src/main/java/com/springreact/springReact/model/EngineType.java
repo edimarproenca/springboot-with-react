@@ -2,11 +2,16 @@ package com.springreact.springReact.model;
 
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,6 +27,7 @@ public class EngineType implements Serializable {
 	private Long id;
 	private String name;
 	
+	
 	public EngineType() {
 	}
 	
@@ -29,6 +35,7 @@ public class EngineType implements Serializable {
 		super();
 		this.name = model;
 	}
+	
 	public Long getId() {
 		return id;
 	}

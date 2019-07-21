@@ -4,9 +4,12 @@ package com.springreact.springReact.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,8 +26,12 @@ public class Car implements Serializable {
 	
 	private String model;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn
 	private EngineType engineType;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn
 	private FuelType fuelType;
 	
 	private String year;
