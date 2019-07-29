@@ -51,8 +51,8 @@ public class CarController {
 	
 	@RequestMapping(path = "findAll",method = RequestMethod.GET ,produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<Car> getAll() {
-		return carService.findAll();
+	public List<Car> getAll(@RequestParam("first") int first) {
+		return carService.findAll(first);
 	}
 
 	@RequestMapping(path = "delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

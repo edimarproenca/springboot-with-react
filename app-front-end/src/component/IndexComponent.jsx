@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button'
 import NotificationModalComponent from './NotificationModalComponent'
 import Loading from './Loading'
-import Jumbotron from 'react-bootstrap/Jumbotron'
-
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
 import CourseDataService from '../service/CarDataService'
+import './IndexComponent.css'
 
-class ListCarComponent extends Component {
+class IndexComponent extends Component {
 
     constructor(props) {
         super(props)
         this.refreshCars = this.refreshCars.bind(this)
         this.state = {
             cars: [],
-            title: "",
-            message: "",
+            pageNumber: 0
         }
 
     }
 
-    componentDidMount() {
-        console.log('DidMount');
+    componentWillMount(){
         this.refreshCars();
     }
 
     refreshCars() {
         console.log('RefreshingPage')
         this.setState({isLoading: true});
-        CourseDataService.retrieveAllCourses()
+        CourseDataService.findAllByPage(this.state.pageNumber)
             .then(
                 response => {
                     console.log(response)
@@ -48,7 +48,7 @@ class ListCarComponent extends Component {
         })
     }
 
-    deleteCar(e){
+    deleteButtonClick(e){
         this.setState({isLoading: true});
         CourseDataService.delete(e).then(response => {
             console.log("returning delete !")
@@ -81,12 +81,43 @@ class ListCarComponent extends Component {
         this.setState({title: title, message: message});
     }
 
+    handleNextPage(){
+        let page = this.state.pageNumber+1;
+        this.setState({pageNumber: page})
+        this.refreshCars()
+        console.log('next page -> ' + this.state.pageNumber)
+    }
+
+    handleBackPage(){
+        if(this.state.pageNumber-1>=0){
+            let page = this.state.pageNumber-1;
+            this.setState({pageNumber: page})
+        }else{
+            this.setState({pageNumber: 0})
+        }
+        this.refreshCars()
+        console.log('back page -> ' + this.state.pageNumber)
+    }
+
     render() {
         return (
-            <div className="container">
-                <Jumbotron fluid>
-                <div className="container">
-                    <table className="table">
+            <div>
+                <Row>
+                <Col fluid xs={3}>
+                    <Container className="containerLeft">
+                        <Row>
+                            <h3>Spring/React/Spring Batch</h3>
+                        </Row>
+                        <Row>
+                            <Button className="rowLeft" onClick={e => this.populateDataBase()}>StartSpringBatch</Button>
+                        </Row>
+                        <Row>
+                            <Button className="rowLeft" onClick={e => this.refreshCars()}>Reload Table</Button>
+                        </Row>
+                    </Container>
+                </Col>
+                <Col fluid xs={9}>
+                <table responsive="xl" className="table">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -98,8 +129,7 @@ class ListCarComponent extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {
-                                this.state.cars.map(
+                        {this.state.cars.map(
                                     car =>
                                         <tr key={car.id}>
                                             <td>{car.id}</td>
@@ -107,15 +137,19 @@ class ListCarComponent extends Component {
                                             <td>{car.engineType.name}</td>
                                             <td>{car.fuelType.name}</td>
                                             <td>{car.year}</td>
-                                            <td><Button variant="danger" onClick={e => this.deleteCar(car)}>Delete</Button></td>
+                                            <td><Button variant="danger" onClick={e => this.deleteButtonClick(car)}>Delete</Button></td>
                                         </tr>
                                 )
                             }
                         </tbody>
-                    </table>
-                </div>
-                </Jumbotron>
-
+                </table>
+                <Row>
+                    <Col><Button className="rowLeft" onClick={e => this.handleBackPage()}>Back</Button></Col>
+                    <Col><Button className="rowLeft" onClick={e => this.handleNextPage()}>Next</Button></Col>
+                </Row>
+                </Col>
+                </Row>
+                
                 {this.state.showModal?<NotificationModalComponent
                                 title={this.state.title}
                                 message={this.state.message}
@@ -132,4 +166,4 @@ class ListCarComponent extends Component {
     }
 }
 
-export default ListCarComponent
+export default IndexComponent

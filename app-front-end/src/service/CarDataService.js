@@ -9,6 +9,14 @@ class CourseDataService {
         return axios.get(`${CAR_API_URL}/findAll`);
     }
 
+    findAllByPage(first=0){
+        return axios.get(`${CAR_API_URL}/findAll`,{
+            params:{
+                first: first
+            }
+        });
+    }
+
     populateDataBase(){
         return axios.post(`${CAR_API_URL}/loadDataBase`)
     }
