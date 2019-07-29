@@ -13,6 +13,14 @@ class CourseDataService {
         return axios.post(`${CAR_API_URL}/loadDataBase`)
     }
 
+    delete(e){
+        return axios.delete(`${CAR_API_URL}/delete/`, 
+                {
+                    params: {
+                    id: e.id
+                }
+        })
+    }
 }
 
 export default new CourseDataService()

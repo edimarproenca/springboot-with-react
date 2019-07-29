@@ -4,6 +4,8 @@ package com.springreact.springReact.job;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,7 @@ public class CarProcessor implements ItemProcessor<Car, Car>{
 		}
 		return result;
 	}
+	
 	
 	@Override
 	public Car process(Car item) throws Exception {
