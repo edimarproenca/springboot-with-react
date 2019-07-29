@@ -2,6 +2,10 @@
     margin-top: 20px
 }
 
+.containerRight{
+    max-height: 60%
+}
+
 .rowLeft {
     margin: auto;
     margin-top: 5px
@@ -10,3 +14,8 @@
 .pagination {
     margin: auto;
 }
+
+.titleSideBar{
+    margin: auto
+}
+

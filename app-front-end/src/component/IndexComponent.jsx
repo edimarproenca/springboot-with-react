@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+import Table from 'react-bootstrap/Table'
 import CourseDataService from '../service/CarDataService'
 import './IndexComponent.css'
 
@@ -17,7 +18,6 @@ class IndexComponent extends Component {
             cars: [],
             pageNumber: 0
         }
-
     }
 
     componentWillMount(){
@@ -101,12 +101,12 @@ class IndexComponent extends Component {
 
     render() {
         return (
-            <div>
+            <div styleName="containerRight">
                 <Row>
                 <Col xs={3}>
                     <Container className="containerLeft">
-                        <Row>
-                            <h3>Spring/React/Spring Batch</h3>
+                        <Row styleName="titleSideBar">
+                            <h3 >Actions</h3>
                         </Row>
                         <Row>
                             <Button className="rowLeft" onClick={e => this.populateDataBase()}>StartSpringBatch</Button>
@@ -117,7 +117,7 @@ class IndexComponent extends Component {
                     </Container>
                 </Col>
                 <Col xs={9}>
-                <table responsive="xl" className="table">
+                <Table striped bordered hover variant="dark" responsive="xl" className="table">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -142,12 +142,15 @@ class IndexComponent extends Component {
                                 )
                             }
                         </tbody>
-                </table>
-                {this.state.cars.length>0?
-                <Row>
-                    <Col><Button className="rowLeft" onClick={e => this.handleBackPage()}>Back</Button></Col>
-                    <Col><Button className="rowLeft" onClick={e => this.handleNextPage()}>Next</Button></Col>
-                </Row>:<div><h3>Nothing to display</h3></div>}
+                        <tfoot>
+                        {this.state.cars.length>0?
+                        <Row>
+                            <Col><Button  variant="danger" className="rowLeft" onClick={e => this.handleBackPage()}>Back</Button></Col>
+                            <Col><Button  variant="danger"  className="rowLeft" onClick={e => this.handleNextPage()}>Next</Button></Col>
+                        </Row>:<div><h3>Nothing to display</h3></div>}                            
+                        </tfoot>
+                </Table>
+
                 </Col>
                 </Row>
                 
