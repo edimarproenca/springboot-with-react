@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Modal from 'react-bootstrap/Modal'
-import { MDBIcon } from 'mdbreact'
 
 export default class Loading extends Component {
     

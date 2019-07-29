@@ -103,7 +103,7 @@ class IndexComponent extends Component {
         return (
             <div>
                 <Row>
-                <Col fluid xs={3}>
+                <Col xs={3}>
                     <Container className="containerLeft">
                         <Row>
                             <h3>Spring/React/Spring Batch</h3>
@@ -116,7 +116,7 @@ class IndexComponent extends Component {
                         </Row>
                     </Container>
                 </Col>
-                <Col fluid xs={9}>
+                <Col xs={9}>
                 <table responsive="xl" className="table">
                         <thead>
                             <tr>
@@ -143,10 +143,11 @@ class IndexComponent extends Component {
                             }
                         </tbody>
                 </table>
+                {this.state.cars.length>0?
                 <Row>
                     <Col><Button className="rowLeft" onClick={e => this.handleBackPage()}>Back</Button></Col>
                     <Col><Button className="rowLeft" onClick={e => this.handleNextPage()}>Next</Button></Col>
-                </Row>
+                </Row>:<div><h3>Nothing to display</h3></div>}
                 </Col>
                 </Row>
                 
