@@ -58,7 +58,7 @@ public class ReflectionsTest2 {
 		DateTimeFormatter dtf = null;
 		Class<? extends Object> objClass = obj.getClass();
 		for (Field field : objClass.getDeclaredFields()) {
-			if (field.getAnnotation(Propertie1.class) != null) {
+			if (this.hasPropertie1Annotation(field)) {
 				Propertie1 annotation = field.getAnnotation(Propertie1.class);
 				Optional<Object> value = null;
 				annotationValue = annotation.outputFormat();
@@ -68,7 +68,7 @@ public class ReflectionsTest2 {
 						value = Optional.ofNullable(field.get(obj));
 						field.setAccessible(false);
 					} catch (Exception e) {
-						e.printStackTrace();
+						throw new Exception(e.getCause());
 					}
 					if (value.isPresent()) {
 						dtf = DateTimeFormatter.ofPattern(annotationValue);
@@ -76,14 +76,19 @@ public class ReflectionsTest2 {
 						fieldValue = (LocalDateTime) value.get();
 						result = dtf.format(fieldValue);
 					} else {
-						result = "NullObject";
+						throw new Exception("NullObject");
 					}
 				}else {
-					result = "outputFormat is blank";
+					throw new Exception("outputFormat is blank");
 				}
 			}
 		}
 		return result;
+	}
+	
+	private Boolean hasPropertie1Annotation(Field field) {
+		Optional<Propertie1> opt = Optional.ofNullable(field.getAnnotation(Propertie1.class));
+		return opt.isPresent();
 	}
 
 }
