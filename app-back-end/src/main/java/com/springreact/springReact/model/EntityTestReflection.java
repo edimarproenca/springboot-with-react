@@ -5,10 +5,11 @@ import java.time.LocalDateTime;
 import com.springreact.springReact.annotations.Propertie1;
 import com.springreact.springReact.annotations.Propertie2;
 import com.springreact.springReact.annotations.Propertie3;
+import com.springreact.springReact.enums.FormatTypeEnum;
 
 public class EntityTestReflection {
 
-	@Propertie1(outputFormat = "dd-MM-yyyy")
+	@Propertie1(outputFormat = FormatTypeEnum.yyyyMMdd)
 	private LocalDateTime propertie1;
 	
 	@Propertie2()

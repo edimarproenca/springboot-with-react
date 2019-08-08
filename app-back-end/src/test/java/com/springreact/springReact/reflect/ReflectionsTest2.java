@@ -12,9 +12,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.springreact.springReact.annotations.Propertie1;
+import com.springreact.springReact.dto.FormattedValueResult;
 import com.springreact.springReact.model.EntityTestReflection;
 import com.springreact.springReact.model.EntityTestReflection2;
 
@@ -23,36 +25,36 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReflectionsTest2 {
 
-	public List<EntityTestReflection> list = new ArrayList<EntityTestReflection>();
+	public List<Object> list = new ArrayList<Object>();
 
-//	@Before
+	@Before
 	public void entityFactory2() {
-		for (int i = 0; i < 1000; i++) {
-			list.add(new EntityTestReflection(LocalDateTime.now(), i, true));
+		LocalDateTime ldt = LocalDateTime.now();
+		for (int i = 0; i < 300; i++) {
+			list.add(new EntityTestReflection(ldt.plusDays(i), i, true));
+			list.add(new EntityTestReflection2(ldt.plusDays(i)));
 		}
 	}
 
 	@Test
 	public void runTest() {
-		Map<String, Field> methodMap = new HashMap<String, Field>();
-		EntityTestReflection etr = new EntityTestReflection(LocalDateTime.now(), 1, true);
-		EntityTestReflection etr2 = new EntityTestReflection();
-		EntityTestReflection2 etr3 = new EntityTestReflection2(LocalDateTime.now());
-		EntityTestReflection2 etr4 = new EntityTestReflection2();
+		List<FormattedValueResult> fvrList = new ArrayList<FormattedValueResult>();
 
-		try {
-			log.info(this.getFormatandLocalDate(etr));
-			log.info(this.getFormatandLocalDate(etr2));
-			log.info(this.getFormatandLocalDate(etr3));
-			log.info(this.getFormatandLocalDate(etr4));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		assertTrue(true);
+		list.stream().forEach(etrs -> {
+			try {
+				fvrList.add(this.getFormatandLocalDate(etrs));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+				
+		fvrList.stream().forEach(fvr -> log.info(fvr.toString()));
+
+		assertTrue(fvrList.parallelStream().allMatch(FormattedValueResult::passTest));
 	}
 
-	private String getFormatandLocalDate(Object obj) throws Exception {
-		String result = "";
+	private FormattedValueResult getFormatandLocalDate(Object obj) throws Exception {
+		String formattedValue = "";
 		String annotationValue = "";
 		LocalDateTime fieldValue = null;
 		DateTimeFormatter dtf = null;
@@ -61,7 +63,7 @@ public class ReflectionsTest2 {
 			if (this.hasPropertie1Annotation(field)) {
 				Propertie1 annotation = field.getAnnotation(Propertie1.class);
 				Optional<Object> value = null;
-				annotationValue = annotation.outputFormat();
+				annotationValue = annotation.outputFormat().getValor();
 				if (StringUtils.isNotBlank(annotationValue)) {
 					try {
 						field.setAccessible(true);
@@ -74,18 +76,18 @@ public class ReflectionsTest2 {
 						dtf = DateTimeFormatter.ofPattern(annotationValue);
 						LocalDateTime date = (LocalDateTime) value.get();
 						fieldValue = (LocalDateTime) value.get();
-						result = dtf.format(fieldValue);
+						formattedValue = dtf.format(fieldValue);
 					} else {
-						throw new Exception("NullObject");
+						throw new Exception("Not be null");
 					}
-				}else {
+				} else {
 					throw new Exception("outputFormat is blank");
 				}
 			}
 		}
-		return result;
+		return new FormattedValueResult(annotationValue, fieldValue, formattedValue);
 	}
-	
+
 	private Boolean hasPropertie1Annotation(Field field) {
 		Optional<Propertie1> opt = Optional.ofNullable(field.getAnnotation(Propertie1.class));
 		return opt.isPresent();
